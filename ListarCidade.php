@@ -6,61 +6,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listar Cidades</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            background-color: #f9f9f9;
-            padding: 20px;
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+            text-align: center;
+            padding: 40px;
         }
 
         h1 {
-            text-align: center;
+            color: #6f42c1; /* Roxo */
             margin-bottom: 20px;
-            color: #333;
         }
 
         .btn {
             display: inline-block;
-            padding: 10px 20px;
-            margin-right: 10px;
+            padding: 12px 20px;
+            margin: 5px;
             text-decoration: none;
-            color: #fff;
-            background-color: #007bff;
-            border-radius: 4px;
-            transition: background-color 0.3s ease;
+            color: #ffffff;
+            background-color: #6f42c1; /* Roxo */
+            border-radius: 5px;
+            transition: background-color 0.3s;
         }
 
         .btn:hover {
-            background-color: #0056b3;
+            background-color: #5a2e91; /* Roxo escuro */
         }
 
         table {
-            width: 100%;
+            width: 80%;
+            margin: 20px auto;
             border-collapse: collapse;
-            margin-top: 20px;
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background-color: #ffffff;
         }
 
         th, td {
-            padding: 12px;
-            text-align: left;
-            border: 1px solid #ddd;
+            border: 1px solid #6f42c1; /* Roxo */
+            padding: 10px;
+            text-align: center;
         }
 
         th {
-            background-color: #007bff;
-            color: #fff;
+            background-color: #6f42c1; /* Roxo */
+            color: #ffffff;
         }
 
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
+        tr:hover {
+            background-color: #f1f1f1; /* Fundo ao passar o mouse */
         }
     </style>
 </head>
@@ -68,7 +61,6 @@
     <?php
         include('includes/conexao.php');
         $sql = "SELECT * FROM Cidade";
-        //Executa a consulta
         $result = mysqli_query($con, $sql);
     ?>
     <h1>Consulta de Cidades</h1>
@@ -76,19 +68,22 @@
         <a href="CadastroCidade.html" class="btn">Cadastrar Nova Cidade</a>
         <a href="index.html" class="btn">Voltar à página inicial</a>
     </div>
-    <table align="center" border="1">
+    <table>
         <tr>
             <th>Código</th>
             <th>Nome</th>
             <th>Estado</th>
+            <th>Alterar</th>
+            <th>Deletar</th>
         </tr>
         <?php
-            //Retorna todas as linhas da consulta
             while($row = mysqli_fetch_array($result)) {
                 echo "<tr>";
                 echo "<td>".$row['id']."</td>";
                 echo "<td>".$row['nome']."</td>";
                 echo "<td>".$row['estado']."</td>";
+                echo "<td><a href='alteraCidade.php?id=".$row['id']."'>Alterar</a></td>";
+                echo "<td><a href='DeletarCidade.php?id=".$row['id']."'>Deletar</a></td>";
                 echo "</tr>";
             }
         ?>

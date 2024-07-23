@@ -57,38 +57,47 @@
         }
     </style>
 </head>
-<body>
+<body> 
     <?php
         include('includes/conexao.php');
-        $sql = "SELECT * FROM Cliente";
+        $sql = "SELECT cli.id , cli.nome nomecliente, cli.email, cli.ativo, cid.nome nomecidade, cid.estado FROM cliente cli LEFT JOIN cidade cid on cid.id = cli.id_cidade";
         //Executa a consulta
         $result = mysqli_query($con, $sql);
     ?>
     <h1>Consulta de Clientes</h1>
     <div style="text-align: center; margin-bottom: 20px;">
-        <a href="CadastroCliente.html" class="btn">Cadastrar Cliente</a>
+        <a href="CadastroCliente.php" class="btn">Cadastrar Cliente</a>
         <a href="index.html" class="btn">Voltar à página inicial</a>
     </div>
     <table align="center" border="1">
-        <tr>
-            <th>Nome</th>
-            <th>Nome</th>
-            <th>Email</th>
-            <th>Senha</th>
-            <th>Alterar</th>
-            <th>Deletar</th>
-        </tr>
-        <?php 
-            while($row = mysqli_fetch_array($result)) {
+    <tr>
+                <th>Código</th>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Ativo</th>
+                <th>Cidade</th>
+                <th>Estado</th>                
+                <th>Alterar</th>
+                <th>Deletar</th>
+            </tr>
+        
+            <?php //mysqli_fetch_array lê uma linha por vez
+            while($row = mysqli_fetch_array($result)){
+                $ativo = $row['ativo'] == '1' ? 'Sim' : 'Não';
                 echo "<tr>";
                 echo "<td>".$row['id']."</td>";
-                echo "<td>".$row['nome']."</td>";
+                echo "<td>".$row['nomecliente']."</td>";
                 echo "<td>".$row['email']."</td>";
-                echo "<td>".$row['senha']."</td>";
-                echo "<td><a href='AlteraCliente.php?id=".$row['id']."'>Alterar</a></td>";
-                echo "<td><a href='DeletarCliente.php?id=".$row['id']."'>Deletar</a></td>";
+                echo "<td>".$ativo."</td>";
+                echo "<td>".$row['nomecidade']."</td>";
+                echo "<td>".$row['estado']."</td>";
+                echo "<td><a href='alteraCliente.php?id="
+                .$row['id']."'>Alterar</a></td>";
+                echo "<td><a href='DeletarCliente.php?id="
+                .$row['id']."'>Deletar</a></td>";
                 echo "</tr>";
             }
+    
         ?>
     </table>
 </body>

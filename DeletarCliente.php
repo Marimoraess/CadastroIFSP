@@ -1,17 +1,11 @@
-<?php
-    include('includes/conexao.php');
-    $id = $_POST['id'];
-    $nome = $_POST['nome'];
-    $email = $_POST['email'];
-    $senha = $_POST['senha'];
-?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alteração</title>
+    <title>Deletar Cliente</title>
     <style type="text/css">
         body {
             font-family: 'Arial', sans-serif;
@@ -26,20 +20,13 @@
             margin-bottom: 20px;
         }
 
-        p {
-            font-size: 1.2em;
-            margin: 10px 0;
-            color: #495057;
-        }
-
-        .success {
+        h2 {
             color: #28a745; /* Verde */
-            font-weight: bold;
+            margin: 10px 0;
         }
 
         .error {
             color: #dc3545; /* Vermelho */
-            font-weight: bold;
         }
 
         .btn-container {
@@ -60,26 +47,27 @@
             background-color: #5a2e91; /* Roxo escuro */
         }
     </style>
-</head>
-<body>
+    <body>
     <div class="container">
-        <h1>Alteração de Dados</h1>
+        <h1>Deletar Cliente</h1>
         <?php
-            echo "<p>Id: $id</p>";
-            echo "<p>Nome: $nome</p>";
-            echo "<p>Email: $email</p>";
-            echo "<p>Senha: $senha</p>";
-            $sql = "UPDATE cliente SET 
-                        nome = '$nome',
-                        email = '$email',
-                        senha = '$senha'
-                    WHERE id = $id";
-            $result  = mysqli_query($con, $sql);
-            if ($result) {
-                echo '<div class="message success">Dados atualizados com sucesso!</div>';
+            include('includes/conexao.php');
+            $id = $_GET['id'];
+            
+            // Preparando a consulta SQL com prepared statement
+            $sql = "DELETE FROM cliente WHERE id = ?";
+            $stmt = mysqli_prepare($con, $sql);
+            mysqli_stmt_bind_param($stmt, "i", $id);
+            mysqli_stmt_execute($stmt);
+            
+            if (mysqli_stmt_affected_rows($stmt) > 0) {
+                echo '<div class="message success"><h2>Dados deletados com sucesso!</h2></div>';
             } else {
-                echo '<div class="message error">Erro ao atualizar dados! ' . mysqli_error($con) . '</div>';
+                echo '<div class="message error"><h2>Erro ao deletar</h2><p>' . mysqli_error($con) . '</p></div>';
             }
+            
+            mysqli_stmt_close($stmt);
+            mysqli_close($con);
         ?>
         <!-- Botão para voltar à página anterior -->
         <button class="btn" onclick="history.back()">Voltar</button>
